@@ -1,32 +1,34 @@
 <!--create.ejs-->
 <form action = "/course/feedback" method = "POST" onsubmit="submitForm(this);return false">
+    <h4>Coach Feedback</h4>
 	<div class = "row">
-		<div class = "col-12 col-md-6 card myCardPage">
-			<h4>Coach Feedback</h4>
-			<div class = "form-group">
+		<div class = "col-4 col-md-4 card">
+			<div class = "col-4 col-md-4 card">
 				<label> Course name: </label>
 				<input type = "text" class = "form-control" name = "name" required>
 			</div>
-			<div class = "form-group">
+			<div class = "col-4 col-md-4 card">
 				<label> Course level: </label>
 				<input type = "text" class = "form-control" name = "level" required>
 			</div>
-			<div class = "form-group">
+			<div class = "col-4 col-md-4 card">
 				<label> Course id: </label>
 				<input type = "text" class = "form-control" name = "courseId" required>
 			</div>
-			<div class = "form-group">
+			<div class = "col-4 col-md-4 card">
 				<label> Venue: </label>
 				<input type = "text" class = "form-control" name = "venue" required>
 			</div>
-			<div class = "form-group">
+			<div class = "col-4 col-md-4 card">
 				<label> Class size: </label>
 				<input type = "text" class = "form-control" name = "size" required>
 			</div>
-			<div class = "form-group">
+			<div class = "col-4 col-md-4 card">
 				<label> Coach: </label>
 				<input type = "text" class = "form-control" name = "coach" required>
 			</div>
+        </div>
+		<div class = "col-12 col-md-6 card myCardPage">
 			<div class = "form-group">
 				<label> Course arrangement: </label>
 				<textarea cols=50 rows=6 class = "form-control" name = "arrangement"></textarea>
@@ -46,11 +48,12 @@
             
 			<div class = "form-group">
 				<label> Signature: </label>
-				<input type = "text" class = "form-control" name = "signature" required>
+				<input type = "text" class = "form-control inlineInput" name = "signature" required>
 				<label> Date: </label>
-				<input type = "text" class = "form-control" name = "date" required>
+				<input type = "text" class = "form-control inlineInput" name = "date" required>
 			</div>
-			<div class = "form-group">
+        </div>
+			<!-- <div class = "form-group">
 				<label> Location: </label>
 				<div style="position:relative;">     
 					<span style="margin-left:90%;width:4%px;overflow:hidden;">     
@@ -68,8 +71,8 @@
 				<label> Cuisine: </label>
 				<input type = "text" class = "form-control" name = "cuisine">
 			</div>
-		</div>
-		<div class = "col-12 col-md-6 card myCardPage">
+		</div> -->
+		<!-- <div class = "col-12 col-md-6 card myCardPage">
 			<div class = "form-group">
 				<label> Image URL: </label>
 				<input type = "text" class = "form-control" name = "imageURL">
@@ -93,7 +96,7 @@
 				<input name = "highlighted" type = "checkbox" value="yes">
 				<label> Highlighted Restaurant </label>
 			</div>
-		</div>
+		</div> -->
 		<button type = "submit" class = "btn btn-primary submitBtn"> Submit </button>
 	</div>
 </form>
