@@ -1,0 +1,25 @@
+<!--index.ejs-->
+<div class = "row">
+	<% restaurants.forEach( function (model) { %>
+	<div class = "col-12 col-md-6 card">
+		<a href = "/<%= model.id %>">
+			<h5><%= model.name %></h5>
+		</a>
+
+		<div>
+			<div class = "myCardDiv">
+				<img class = "myCardImg" src = "<%= model.imageURL %>" alt = "an online image"/>
+			</div>
+			<div class = "myCardDiv">
+				<ul>
+					<li class = "myCardLi"><b>Location: </b><%= model.location %></li>
+					<li class = "myCardLi"><b>Cuisine: </b><%= model.cuisine %></li>
+					<li class = "myCardLi"><b>Price Range: </b> $<%= model.priceMin %>-<%= model.priceMax %></li>
+					<% ratingStar = ['☆☆☆☆☆', '★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★']; %>
+					<li class = "myCardLi"><b>Rating: </b><%= ratingStar[model.rating] %></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<% }); %>
+</div>

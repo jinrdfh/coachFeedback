@@ -1,0 +1,129 @@
+<!--paginate.ejs-->
+<div class = "row">
+	<% restaurants.forEach( function (model) { %>
+		<div class = "col-12 col-md-4 card">
+			<img class = "myCardImg " src = "<%= model.imageURL %>" alt = "an online image"/>
+			<a href = "/<%= model.id %>">
+				<h5 class = "myCardTitle"><%= model.name %></h5>
+			</a>
+			<ul>
+				<li class = "myCardLi"><b>Location: </b><%= model.location %></li>
+				<li class = "myCardLi"><b>Cuisine: </b><%= model.cuisine %></li>
+				<li class = "myCardLi"><b>Price Range: </b> $<%= model.priceMin %>-<%= model.priceMax %></li>
+				<% ratingStar = ['☆☆☆☆☆', '★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★']; %>
+				<li class = "myCardLi"><b>Rating: </b><%= ratingStar[model.rating] %></li>
+			</ul>
+		</div>
+	<% }); %>
+
+
+	<div class = "col-12 col-md-4 card myCardPage">
+		<% const current = parseInt(req.query.page) || 1; %>
+		<nav aria-label = "Page navigation example">
+			<ul class = "pagination">
+				<li class = "page-item">
+					<button onclick = "pageClick(Math.max(<%= current %>-1, 1))"> Previous </button>
+				</li>
+
+				<% for (i = 1; i <= count; i++) { %>
+					<li class = "page-item">
+						<button onclick = "pageClick( <%= i %> )"><%= i %></button>
+					</li>
+				<% } %>
+
+				<li class = "page-item">
+					<button onclick = "pageClick(Math.min(<%= current %>+1, <%= count %>))">Next</button>
+				</li>
+			</ul>
+		</nav>
+
+		<form action = "/restaurant/create" method = "POST" id = "searchForm">
+			<div class = "form-group">
+				<label> Restaurant Name: </label>
+				<input type = "text" class = "form-control" name = "name" value="<%= restaurant.name %>" required>
+			</div>
+			<div class = "form-group">
+				<label> Location: </label>
+				<div style="position:relative;">     
+					<span style="margin-left:90%;width:4%px;overflow:hidden;">     
+						<select style="width:94%;margin-left:-90%" onchange="this.parentNode.nextSibling.value=this.value">
+							<option value = "">Please select a location</option>
+							<% szLoc = ["Tsim Sha Tsui", "Mong Kok"]; %>
+							<% szLoc.forEach(function (tpLoc) { %>
+							<option value = "<%= tpLoc %>"><%= tpLoc %></option>
+							<% }); %>
+						</select>
+					</span><input name="location" style="width:90%;position:absolute;left:0px;" value="<%= restaurant.location %>">     
+				</div> 
+			</div>
+			<div class = "form-group">
+				<label> Cuisine: </label>
+				<input type = "text" class = "form-control" name = "cuisine" value="<%= restaurant.cuisine %>" >
+			</div>
+			<div class = "form-group">
+				<label> Price Range(HK$): </label><br>
+				<label> Min: </label>
+				<input type = "number" class = "inlineInput form-control" name = "priceMin" value="<%= restaurant.priceMin %>">
+				<label> Max: </label>
+				<input type = "number" class = "form-control inlineInput" name = "priceMax" value="<%= restaurant.priceMax %>">
+			</div>
+			<div class = "form-group">
+				<label> Rating: </label><br>
+				<label> Min: </label>
+				<input type = "number" class = "form-control inlineInput" name = "ratingMin" value="<%= restaurant.ratingMin %>" min=0 max=5>
+				<label> Max: </label>
+				<input type = "number" class = "form-control inlineInput" name = "ratingMax" value="<%= restaurant.ratingMax %>" min=0 max=5>
+			</div>
+			<button class = "btn btn-primary" onclick = "pageClick(1)"> Submit </button>
+		</form>
+	</div>
+
+</div>
+<script>
+	function pageClick(pageNum) 
+	{
+		searchForm = document.getElementById("searchForm");
+    	if (searchForm.priceMin.value > searchForm.priceMax.value)
+    	{
+    		alert("wrong price");
+    		return;
+    	}
+    	if (searchForm.ratingMin.value > searchForm.ratingMax.value)
+    	{
+    		alert("wrong Rating");
+    		return;
+    	}
+
+		jumpURL = "/search?page=" + pageNum;
+		searchForm.action = jumpURL;
+		searchForm.submit();
+    	// if (oFormElement.priceMin.value > oFormElement.priceMax.value)
+    	// {
+    	// 	alert("wrong price");
+    	// 	return;
+    	// }
+    	// else
+    	// {
+    	// 	//alert(oFormElement.priceMin);
+    	// 	console.log("DEBUG PRICE ", oFormElement.priceMin.value);
+    	// }
+    	
+     //    var response = await fetch(oFormElement.action, {
+     //        method: oFormElement.method,
+     //        credentials: 'same-origin',
+     //        body: new FormData(oFormElement),
+     //    });
+
+     //    if (response.ok) {
+     //        var data = await response.json();   // for res.ok() or res.json()
+     //        alert(data);
+     //        // location.reload(true);
+     //        window.location = "/";
+     //    } else if (response.status == 401) {
+     //        var data = await response.text();   // for res.send()
+     //        alert(data);
+     //    } else {
+     //        alert(response.statusText);
+     //    }
+	}
+</script>

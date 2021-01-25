@@ -1,0 +1,136 @@
+<!--create.ejs-->
+<form action = "/course/feedback" method = "POST" onsubmit="submitForm(this);return false">
+	<div class = "row">
+		<div class = "col-12 col-md-6 card myCardPage">
+			<h4>Coach Feedback</h4>
+			<div class = "form-group">
+				<label> Course name: </label>
+				<input type = "text" class = "form-control" name = "name" required>
+			</div>
+			<div class = "form-group">
+				<label> Course level: </label>
+				<input type = "text" class = "form-control" name = "level" required>
+			</div>
+			<div class = "form-group">
+				<label> Course id: </label>
+				<input type = "text" class = "form-control" name = "courseId" required>
+			</div>
+			<div class = "form-group">
+				<label> Venue: </label>
+				<input type = "text" class = "form-control" name = "venue" required>
+			</div>
+			<div class = "form-group">
+				<label> Class size: </label>
+				<input type = "text" class = "form-control" name = "size" required>
+			</div>
+			<div class = "form-group">
+				<label> Coach: </label>
+				<input type = "text" class = "form-control" name = "coach" required>
+			</div>
+			<div class = "form-group">
+				<label> Course arrangement: </label>
+				<textarea cols=50 rows=6 class = "form-control" name = "arrangement"></textarea>
+			</div>
+			<div class = "form-group">
+				<label> Venue and Facilities: </label>
+				<textarea cols=50 rows=6 class = "form-control" name = "facilities"></textarea>
+			</div>
+			<div class = "form-group">
+				<label> Coordination between GAHK and LCSD staff: </label>
+				<textarea cols=50 rows=6 class = "form-control" name = "coordination"></textarea>
+			</div>
+			<div class = "form-group">
+				<label> Others: </label>
+				<textarea cols=50 rows=6 class = "form-control" name = "others"></textarea>
+            </div>
+            
+			<div class = "form-group">
+				<label> Signature: </label>
+				<input type = "text" class = "form-control" name = "signature" required>
+				<label> Date: </label>
+				<input type = "text" class = "form-control" name = "date" required>
+			</div>
+			<div class = "form-group">
+				<label> Location: </label>
+				<div style="position:relative;">     
+					<span style="margin-left:90%;width:4%px;overflow:hidden;">     
+						<select style="width:94%;margin-left:-90%" onchange="this.parentNode.nextSibling.value=this.value">
+							<option value = "">Please select a location</option>
+							<% szLoc = ["Tsim Sha Tsui", "Mong Kok"]; %>
+							<% szLoc.forEach(function (tpLoc) { %>
+							<option value = "<%= tpLoc %>"><%= tpLoc %></option>
+							<% }); %>
+						</select>
+					</span><input name="location" style="width:90%;position:absolute;left:0px;">     
+				</div>     
+			</div>
+			<div class = "form-group">
+				<label> Cuisine: </label>
+				<input type = "text" class = "form-control" name = "cuisine">
+			</div>
+		</div>
+		<div class = "col-12 col-md-6 card myCardPage">
+			<div class = "form-group">
+				<label> Image URL: </label>
+				<input type = "text" class = "form-control" name = "imageURL">
+			</div>
+			<div class = "form-group">
+				<label> Rating: </label>
+				<input type = "number" class = "form-control" value = 0 name = "rating" min=0 max=5>
+			</div>
+			<div class = "form-group">
+				<label> Price Range(HK$): </label><br>
+				<label> Min: </label>
+				<input type = "number" class = "inlineInput form-control" value = 0 name = "priceMin">
+				<label> Max: </label>
+				<input type = "number" class = "form-control inlineInput" value = 10000 name = "priceMax">
+			</div><br>
+			<div class = "form-group">
+				<label> MaxBooking: </label>
+				<input type = "number" class = "form-control" value = 10000 name = "maxBooking" min=0>
+			</div>
+			<div class = "form-group">
+				<input name = "highlighted" type = "checkbox" value="yes">
+				<label> Highlighted Restaurant </label>
+			</div>
+		</div>
+		<button type = "submit" class = "btn btn-primary submitBtn"> Submit </button>
+	</div>
+</form>
+
+<script>
+    async function submitForm(oFormElement) {
+    	//console.log("DEBUG SUBMIT ", oFormElement);
+    	//var oTmp = new FormData(oFormElement);
+
+    	if (oFormElement.priceMin.value > oFormElement.priceMax.value)
+    	{
+    		alert("wrong price");
+    		return;
+    	}
+    	else
+    	{
+    		//alert(oFormElement.priceMin);
+    		console.log("DEBUG PRICE ", oFormElement.priceMin.value);
+    	}
+        var response = await fetch(oFormElement.action, {
+            method: oFormElement.method,
+            credentials: 'same-origin',
+            body: new FormData(oFormElement),
+        });
+
+        if (response.ok) {
+            var data = await response.json();   // for res.ok() or res.json()
+            alert(data);
+            // location.reload(true);
+            window.location = "/";
+        } else if (response.status == 401) {
+            var data = await response.text();   // for res.send()
+            alert(data);
+        } else {
+            alert(response.statusText);
+        }
+
+    };
+
+</script>

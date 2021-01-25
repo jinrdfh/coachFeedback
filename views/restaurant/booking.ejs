@@ -1,0 +1,13 @@
+<!--booking.ejs-->
+<table class = "table">
+	<tr>
+		<td><b>Id</b></td>
+		<td><b>Name</b></td>
+	</tr>
+	<% users.forEach( function (model) { %>
+		<tr>
+			<td><%= model.id %></td>
+			<td><%= model.username %></td>
+		</tr>
+	<% }); %>
+</table>

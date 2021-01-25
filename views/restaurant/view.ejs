@@ -1,0 +1,89 @@
+<!--index.ejs-->
+<h5><%= restaurant.name %></h5>
+<div class = "row">
+	<div class = "col-12 col-md-6 card myCardPage">
+		<img class = "myCardDetailsImg" src = "<%= restaurant.imageURL %>" alt = "an online image">
+		<p><b>Description: </b><%= restaurant.description %></p>
+	</div>
+	<div class = "col-12 col-md-6 card myCardPage">
+		<ul>
+			<li class = "myCardLi"><b>Location: </b><%= restaurant.location %></li>
+			<li class = "myCardLi"><b>Cuisine: </b><%= restaurant.cuisine %></li>
+			<li class = "myCardLi"><b>Price Range: </b> $<%= restaurant.priceMin %>-<%= restaurant.priceMax %></li>
+			<% ratingStar = ['☆☆☆☆☆', '★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★']; %>
+			<li class = "myCardLi"><b>Rating: </b><%= ratingStar[restaurant.rating] %></li>
+			<li class = "myCardLi"><b>MaxBooking: </b><%= restaurant.maxBooking %></li>
+			<li class = "myCardLi"><b>Created: </b><p id = "createdTime"><%= restaurant.createdAt %></p></li>
+			<li class = "myCardLi"><b>Updated: </b><p id = "updatedTime"><%= restaurant.updatedAt %></p></li>
+		</ul>
+	</div>
+</div>
+<% labelReservation = "style = display:none "; %>
+<% labelCancel = "style = display:none "; %>
+<% userId = 0; %>
+<% if (("session" in req) && ("role" in req.session) && ("member" == req.session.role)) { %>
+	<% userId = req.session.userId; %>
+	<% if (restaurant.reservedBy.length) { %>
+		<% labelCancel = ""; %>
+	<% } else { %>
+		<% labelReservation = ""; %>
+	<% } %>
+<% } %>
+<form action="/user/<%= userId %>/reservationList/add/<%= restaurant.id %>" onsubmit="submitForm(this);return false" method = "POST" <%= labelReservation %> >
+	<button type = "submit" class = "btn btn-primary submitBtn">  Reservation </button>
+</form>
+<form action="/user/<%= userId %>/reservationList/remove/<%= restaurant.id %>" onsubmit="submitForm(this);return false" method = "POST" <%= labelCancel %> >
+	<button type = "submit" class = "btn submitBtn btn-danger"> Cancel Booking </button>
+</form>
+
+<script>
+eCreatedT = document.getElementById("createdTime");
+createdTime = eCreatedT.innerHTML;
+//alert(createdTime);
+fmCreatedT = formateDate(createdTime);
+eCreatedT.innerHTML = fmCreatedT;
+
+eUpT = document.getElementById("updatedTime");
+upTime = eUpT.innerHTML;
+//alert(upTime);
+fmUpT = formateDate(upTime);
+eUpT.innerHTML = fmUpT;
+// function formateDate(date) 
+// {
+// 	var date = new Date(date);
+// 	var moment = require('moment');
+// 	return moment(date).format('YYYY-MM-DD HH:mm:ss');
+// }
+function formateDate(date) 
+{
+	var date = new Date(parseInt(date));
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1;
+	var d = date.getDate();
+	// var h = date.getHours();
+	// var mi = date.getMinutes();
+	// m = m > 9 ? m : '0' + m;
+	// alert("y:"+y+"m:"+m+"d:"+d+"h:"+h+"mi:"+mi);
+	// return y + '-' + m + '-' + d + ' ' + h + ':' + mi;
+	return y + '-' + m + '-' + d;
+}
+async function submitForm(oFormElement) {
+    var response = await fetch(oFormElement.action, {
+        method: oFormElement.method,
+        credentials: 'same-origin',
+    });
+
+    if (response.ok) {
+        var data = await response.json();   // for res.ok() or res.json()
+        alert(data);
+        // location.reload(true);
+    	window.location = "/restaurant/" + <%= restaurant.id %>;
+    } else if (response.status == 401) {
+        var data = await response.text();   // for res.send()
+        alert(data);
+    } else {
+        alert(response.statusText);
+    }
+
+};
+</script>

@@ -1,0 +1,67 @@
+<!--admin.ejs-->
+<table class = "table">
+	<tr>
+		<td><b>Id</b></td>
+		<td><b>Name</b></td>
+		<td><b>Location</b></td>
+		<td><b>Cuisine</b></td>
+		<td><b>Bookings</b></td>
+		<td>
+		</td>
+		<td>
+		</td>
+	</tr>
+	<% restaurants.forEach( function (model) { %>
+		<tr>
+			<td><%= model.id %></td>
+			<td><a href = "/restaurant/<%= model.id %>"><%= model.name %></a></td>
+			<td><%= model.location %></td>
+			<td><%= model.cuisine %></td>
+			<td>
+				<% if (0 < model.reservedBy.length) { %>
+				<a href = "/restaurant/<%= model.id %>/reservedBy"><%= model.reservedBy.length %>/<%= model.maxBooking %></a>
+				<% } else { %>
+				0/<%= model.maxBooking %>
+				<% } %>
+			</td>
+			<td>
+				<a href = "/restaurant/update/<%= model.id %>">Edit</a>
+			</td>
+			<td>
+				<button type = "button" class = "btn btn-danger" onclick = "deleteRestaurant('<%= model.id %>')"> Delete </button>
+			</td>
+		</tr>
+	<% }); %>
+</table>
+<script>
+
+    async function deleteRestaurant(id) {
+
+        var r = confirm("Confirm Delete?");
+       
+        if (r) {
+
+            var response = await fetch("/restaurant/" + id, {
+                method: "DELETE",
+                credentials: 'same-origin',
+            });
+            if (response.ok) 
+            {
+			    var data = await response.json();
+			    alert(data.message);
+			    location.reload(true);
+			} 
+			else 
+			{
+			    alert(response.status + ": " + response.statusText);
+			}
+
+        } 
+        else 
+        {
+            alert("cancelled");
+        }
+
+    };
+
+</script>

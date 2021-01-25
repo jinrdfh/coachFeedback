@@ -1,0 +1,70 @@
+.myCardImg
+{
+    width: 100%;
+	height: 200px;
+}
+.myCardDiv
+{
+    float: left;
+    margin: 2%;
+    width: 45%;
+}
+.myCardPage
+{
+    border: 0px !important;
+}
+.myCardDetailsImgDiv
+{
+	width: 45%;
+}
+.myCardDetailsImg
+{
+	width: 100%;
+}
+.myCardTitle
+{
+    margin: 20px;
+	width: 500px;
+}
+.myCardLi 
+{
+    height: 20%;
+
+	list-style-type:none;
+    border: 1px solid rgba(0,0,0,.125);
+}
+.blockDiv
+{
+    display: block;
+}
+.showNamePage
+{
+    border: 0px;
+    width: 40%;
+    max-width: 600px;
+    min-width: 400px;
+    float: left;
+    margin: 20px;
+}
+.submitBtn
+{
+    border: 0px;
+    width: 60%;
+    float: left;
+    margin: 20px;
+}
+.inlineInput
+{
+    display: inline !important;
+    width: 30% !important;
+}
+.paginatePage
+{
+    max-width: 360px;
+    min-width: 300px !important;
+    margin: 10px;
+}
+#createdTime, #updatedTime
+{
+    display: inline;
+}

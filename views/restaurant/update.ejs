@@ -1,0 +1,109 @@
+<!--update.ejs-->
+<form action="/restaurant/<%= restaurant.id %>" method = "POST" onsubmit="submitForm(this);return false">
+	<div class = "row">
+		<div class = "col-12 col-md-6 card myCardPage">
+			<div class = "form-group">
+				<label> Restaurant Name: </label>
+				<input type = "text" class = "form-control" name = "name" value="<%= restaurant.name %>" required>
+			</div>
+			<div class = "form-group">
+				<label> Description: </label>
+				<textarea cols=50 rows=6 class = "form-control" name = "description"><%= restaurant.description %></textarea>
+			</div>
+			<div class = "form-group">
+				<label> Location: </label>
+				<div style="position:relative;">     
+					<span style="margin-left:90%;width:4%px;overflow:hidden;">     
+						<select style="width:94%;margin-left:-90%" onchange="this.parentNode.nextSibling.value=this.value">
+							<option value = "">Please select a location</option>
+							<% szLoc = ["Tsim Sha Tsui", "Mong Kok"]; %>
+							<% szLoc.forEach(function (tpLoc) { %>
+							<option value = "<%= tpLoc %>"><%= tpLoc %></option>
+							<% }); %>
+						</select>
+					</span><input name="location" style="width:90%;position:absolute;left:0px;" value="<%= restaurant.location %>">     
+				</div>    
+			</div>
+			<div class = "form-group">
+				<label> Cuisine: </label>
+				<input type = "text" class = "form-control" name = "cuisine" value="<%= restaurant.cuisine %>" >
+			</div>
+		</div>
+		<div class = "col-12 col-md-6 card myCardPage">
+			<div class = "form-group">
+				<label> Image URL: </label>
+				<input type = "text" class = "form-control" name = "imageURL" value="<%= restaurant.imageURL %>" >
+			</div>
+			<div class = "form-group">
+				<label> Rating: </label>
+				<input type = "number" class = "form-control" name = "rating" value="<%= restaurant.rating %>" min=0 max=5>
+			</div>
+			<div class = "form-group">
+				<label> Price Range(HK$): </label><br>
+				<label> Min: </label>
+				<input type = "number" class = "form-control inlineInput" name = "priceMin" value="<%= restaurant.priceMin %>" min=0>
+				<label> Max: </label>
+				<input type = "number" class = "form-control inlineInput" name = "priceMax" value="<%= restaurant.priceMax %>" min=0>
+			</div>
+			<div class = "form-group">
+				<label> MaxBooking: </label>
+				<input type = "number" class = "form-control" name = "maxBooking" value="<%= restaurant.maxBooking %>" min=0>
+			</div>
+			<div class = "form-group">
+                		<div class="form-check" id="highlightedDIV">
+				<% defChecked = ""; %>
+				<% if ("yes" == restaurant.highlighted) defChecked = "checked"; %>
+				<input class="form-check-input" name = "highlighted" type = "checkbox" value="yes"  id="defaultCheck1" <%= defChecked %>>
+				<label class="form-check-label" for="defaultCheck1"> Highlighted Restaurant </label>
+               	 		</div>
+			</div>
+			<!-- <div class="form-group col-12">
+                <div class="form-check" id="highlightedDIV">
+                    <input class="form-check-input" type="checkbox" value="checked" id="defaultCheck1"
+                        name="Restaurant[highlighted]" <%= restaurant.highlighted %>>
+                    <label class="form-check-label" for="defaultCheck1">
+                        Highlighted Restaurant
+                    </label>
+                </div>
+                <br>
+            </div> -->
+		</div>
+		<button type = "submit" class = "btn btn-primary submitBtn"> Submit </button>
+	</div>
+</form>
+
+<!-- <form action="/delete/<%= restaurant.id %>" method = "POST">
+	<button type = "submit" class = "btn submitBtn btn-danger"> Delete </button>
+</form> -->
+
+<script>
+    async function submitForm(oFormElement) {
+    	//console.log("DEBUG SUBMIT ", oFormElement);
+    	//var oTmp = new FormData(oFormElement);
+
+    	if (oFormElement.priceMin.value > oFormElement.priceMax.value)
+    	{
+    		alert("wrong price");
+    		return;
+    	}
+
+        var response = await fetch(oFormElement.action, {
+            method: "PUT",
+            credentials: 'same-origin',
+            body: new FormData(oFormElement),
+        });
+
+        if (response.ok) {
+            var data = await response.json();   // for res.ok() or res.json()
+            alert(data);
+            // location.reload(true);
+            window.location = "/restaurant/admin";
+        } else if (response.status == 401) {
+            var data = await response.text();   // for res.send()
+            alert(data);
+        } else {
+            alert(response.statusText);
+        }
+
+    };
+</script>

@@ -1,0 +1,12 @@
+<!--index.ejs-->
+<div>
+	<% courses.forEach( function (model) { %>
+
+        <div>
+            <label><%= model.name %></label>
+            <button> fill feedbacks </button>
+            <a class="nav-item nav-link" href="/course/feedback" >fill feedbacks</a>
+        </div>
+            
+	<% }); %>
+</div>
